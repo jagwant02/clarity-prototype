@@ -144,11 +144,12 @@ def handle_counter_reply(
             user_message=message
         )
         response_text = call_llm(prompt)
+        parsed = parse_clarity_output(response_text, session.get("user_context", []))
         return {
             "type": "correction_update",
-            "text": response_text,
             "show_badge": True,
-            "badge_text": "Updated based on your correction"
+            "badge_text": "Updated based on your correction",
+            **parsed
         }
     
     elif reply_type == "recommendation_challenge":
@@ -177,11 +178,12 @@ def handle_counter_reply(
             history=format_history(history)
         )
         response_text = call_llm(prompt)
+        parsed = parse_clarity_output(response_text, session.get("user_context", []))
         return {
             "type": "context_update",
-            "text": response_text,
             "show_badge": True,
-            "badge_text": "Updated with new information"
+            "badge_text": "Updated with new information",
+            **parsed
         }
     
     else:  # follow_up_question

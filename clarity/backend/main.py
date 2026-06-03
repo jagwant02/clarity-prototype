@@ -45,17 +45,21 @@ def chat():
             session
         )
         
-        add_message(
-            session_id, 
-            "assistant", 
-            counter_response["text"]
-        )
+        is_clarity_format = "part1" in counter_response
+        
+        if is_clarity_format:
+            update_session(session_id, {
+                "last_clarity_output": counter_response
+            })
+            add_message(session_id, "assistant", counter_response.get("raw_text", ""))
+        else:
+            add_message(session_id, "assistant", counter_response["text"])
         
         return jsonify({
-            "clarity_activated": True,
+            "clarity_activated": is_clarity_format,
             "response_type": "counter_reply",
             "reply_type": reply_type,
-            "content": counter_response
+            "content": counter_response if is_clarity_format else {"text": counter_response["text"]}
         })
     
     # New query — check if Clarity should activate
