@@ -47,8 +47,14 @@ export default function App() {
             ChatGPT <span className="text-gray-400 text-sm">v</span>
           </div>
           <div className="flex items-center gap-3">
-            <button className="px-4 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-gray-200">Log in</button>
-            <button className="px-4 py-2 text-sm font-medium bg-[#2f2f2f] text-white rounded-full hover:bg-[#3f3f3f]">Sign up for free</button>
+            <button 
+              className="md:hidden px-3 py-1.5 text-xs font-medium border border-[#333] text-gray-300 rounded-lg hover:bg-[#2f2f2f]"
+              onClick={() => setShowMemory(!showMemory)}
+            >
+              {showMemory ? "Close" : "Memory"}
+            </button>
+            <button className="hidden sm:block px-4 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-gray-200">Log in</button>
+            <button className="hidden sm:block px-4 py-2 text-sm font-medium bg-[#2f2f2f] text-white rounded-full hover:bg-[#3f3f3f]">Sign up</button>
           </div>
         </div>
 
@@ -58,9 +64,17 @@ export default function App() {
 
       {/* Context Memory Panel (Clarity Feature) */}
       {showMemory && (
-        <div className="w-[300px] border-l border-[#333] bg-[#171717] flex-shrink-0 flex flex-col">
-          <MemoryPanel context={userContext} />
-        </div>
+        <>
+          {/* Mobile Overlay */}
+          <div 
+            className="md:hidden fixed inset-0 bg-black/50 z-40"
+            onClick={() => setShowMemory(false)}
+          ></div>
+          
+          <div className="absolute right-0 top-0 h-full z-50 md:relative w-[80vw] max-w-[300px] md:w-[300px] md:max-w-none border-l border-[#333] bg-[#171717] flex-shrink-0 flex flex-col shadow-2xl md:shadow-none">
+            <MemoryPanel context={userContext} />
+          </div>
+        </>
       )}
     </div>
   );
