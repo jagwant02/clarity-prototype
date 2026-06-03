@@ -48,7 +48,7 @@ export default function ChatInterface({ onContextUpdate }) {
         isClarity: data.clarity_activated,
         clarityData: data.clarity_activated ? data.content : null,
         rawResponse: data.raw_response || "",
-        content: data.response_type === "plain" ? data.content.text : ""
+        content: data.content?.text || ""
       }]);
     } catch (error) {
       console.error("Chat error:", error);
